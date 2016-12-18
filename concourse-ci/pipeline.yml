@@ -1,0 +1,28 @@
+resources:
+- name: angular2-webpack-starter
+  type: git
+  source:
+    uri: https://github.com/alitari/angular2-webpack-starter.git
+    branch: master
+
+#- name: angular2-webpack-starter-image
+#  type: docker-image
+#  source:
+#    email: {{docker-registry-email}}
+#    username: {{docker-registry-username}}
+#    password: {{docker-registry-password}}
+#    repository: {{docker-registry-host}}/{{docker-registry-repository}}{{docker-registry-imagename}}
+#   tag: docker-registry-tag
+
+jobs:
+- name: job-publish
+  public: true
+  serial: true
+  plan:
+  - get: angular2-webpack-starter
+    trigger: true
+  - task: build
+    file: angular2-webpack-starter/concourse-ci/tasks/build.yml
+
+  #- put: scala-sbt-extra-image
+  #  params: { build: docker-scala-sbt-extra, cache: true }
